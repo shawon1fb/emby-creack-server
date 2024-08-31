@@ -14,6 +14,7 @@ function setHeaders(req, res, next) {
     next();
 }
 
+
 app.use(setHeaders);
 
 // Route for the main handler
