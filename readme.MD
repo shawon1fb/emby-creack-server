@@ -131,6 +131,14 @@ If Nginx is already running, restart it:
 sudo nginx -s reload
 ```
 
+```bash
+# Build the image
+docker build -t emby-validation-server .
+
+# Run the container
+docker run -p 8080:8080 emby-validation-server
+```
+
 ---
 
 ✅ **Now, your macOS machine serves `https://mb3admin.com` securely, forwarding requests to `localhost:8080`.** 🎉  

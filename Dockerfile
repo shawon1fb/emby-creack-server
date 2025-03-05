@@ -1,20 +1,39 @@
-# Use the official Node.js image as the base image
-FROM node:18
+# Stage 1: Build stage
+FROM node:18-alpine AS build
 
-# Set the working directory inside the container
+# Create app directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy package files
 COPY package*.json ./
 
-# Install the dependencies
-RUN npm install
+# Install dependencies
+RUN npm ci --only=production
 
-# Copy the rest of the application code to the working directory
-COPY . .
+# Stage 2: Production stage
+FROM node:18-alpine
 
-# Expose the port the app runs on
+# Create app directory
+WORKDIR /usr/src/app
+
+# Create a non-root user and switch to it
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs
+
+# Copy only production dependencies from build stage
+COPY --from=build --chown=nodejs:nodejs /usr/src/app/node_modules ./node_modules
+
+# Copy app source
+COPY --chown=nodejs:nodejs . .
+
+# Set proper permissions
+RUN chmod 755 .
+
+# Switch to non-root user
+USER nodejs
+
+# Expose the port
 EXPOSE 8080
 
-# Define the command to run the app
-CMD ["npm", "start"]
+# Command to run the application
+CMD ["node", "index.js"]
