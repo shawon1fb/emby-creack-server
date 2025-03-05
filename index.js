@@ -84,24 +84,30 @@ app.post('/admin/service/registration/getStatus', (req, res) => {
     };
     res.json(data);
 });
-
-// Define paths to certificate and key files
-const basePath = process.env.PWD || path.resolve('.');
-const crtFile = path.join(basePath, 'cert', 'server.crt');
-const keyFile = path.join(basePath, 'cert', 'server.key');
-
-// Read SSL certificate and key
-const options = {
-    cert: fs.readFileSync(crtFile),
-    key: fs.readFileSync(keyFile)
-};
-
-
-// Create HTTPS server
-const httpsServer = https.createServer( app);
+//
+// // Define paths to certificate and key files
+// const basePath = process.env.PWD || path.resolve('.');
+// const crtFile = path.join(basePath, 'cert', 'server.crt');
+// const keyFile = path.join(basePath, 'cert', 'server.key');
+//
+// // Read SSL certificate and key
+// const options = {
+//     cert: fs.readFileSync(crtFile),
+//     key: fs.readFileSync(keyFile)
+// };
+//
+//
+// // Create HTTPS server
+// const httpsServer = https.createServer( app);
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0'; // Replace with actual IP
+//
+// httpsServer.listen(PORT, HOST, () => {
+//     console.log(`HTTPS Server running on ${HOST}:${PORT}`);
+// });
 
-httpsServer.listen(PORT, HOST, () => {
-    console.log(`HTTPS Server running on ${HOST}:${PORT}`);
-});
+
+
+app.listen(PORT, HOST, () => {
+    console.log(`Listening on port ${PORT}`);
+})
