@@ -84,6 +84,21 @@ app.post('/admin/service/registration/getStatus', (req, res) => {
     };
     res.json(data);
 });
+
+// New route to serve EmbyPackages.json
+app.get('/admin/service/EmbyPackages.json', (req, res) => {
+    const filePath = path.join(__dirname, 'EmbyPackages.json');
+
+    try {
+        const jsonData = fs.readFileSync(filePath, 'utf-8');
+        const parsedData = JSON.parse(jsonData);
+        res.json(parsedData);
+    } catch (err) {
+        console.error('Error reading EmbyPackages.json:', err);
+        res.status(500).json({ error: 'Failed to load package data' });
+    }
+});
+
 //
 // // Define paths to certificate and key files
 // const basePath = process.env.PWD || path.resolve('.');
